@@ -18,5 +18,25 @@ namespace TodoApi.Controllers {
                 _todoContext.SaveChanges();
             }
         }
+
+        /** GET api/Todo
+         * returns all Todos
+         */
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TodoItem>>> GetAllTodos() {
+            return await _todoContext.TodoItems.ToListAsync();
+        }
+
+        /** GET api/Todo/{id}
+         * returns a specific Todo item
+         */
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TodoItem>> GetTodoItem(long id) {
+            var TodoItem = await _todoContext.TodoItems.FindAsync(id);
+            if(TodoItem == null) {
+                return NotFound();
+            }
+            return TodoItem;
+        }
     }
 }
