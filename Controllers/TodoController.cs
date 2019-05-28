@@ -32,11 +32,21 @@ namespace TodoApi.Controllers {
          */
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id) {
-            var TodoItem = await _todoContext.TodoItems.FindAsync(id);
-            if(TodoItem == null) {
+            var todoItem = await _todoContext.TodoItems.FindAsync(id);
+            if(todoItem == null) {
                 return NotFound();
             }
-            return TodoItem;
+            return todoItem;
+        }
+
+        /** POST api/Todo
+         * save a new TodoItem
+         */
+        [HttpPost]
+        public async Task<ActionResult<TodoItem>> SaveTodoItem(TodoItem item) {
+            _todoContext.TodoItems.Add(item);
+            await _todoContext.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetTodoItem), new { id = item.id }, item);
         }
     }
 }
