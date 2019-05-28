@@ -61,5 +61,19 @@ namespace TodoApi.Controllers {
             await _todoContext.SaveChangesAsync();
             return NoContent();
         }
+
+        /** DELETE api/Todo/{id}
+         * deletes a TodoItem
+         */
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTodoItem(long id) {
+            var todoItem = await _todoContext.TodoItems.FindAsync(id);
+            if(todoItem == null){
+                return NotFound();
+            }
+            _todoContext.TodoItems.Remove(todoItem);
+            await _todoContext.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }
